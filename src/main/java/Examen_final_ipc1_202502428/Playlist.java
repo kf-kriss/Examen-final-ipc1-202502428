@@ -36,9 +36,72 @@ public class Playlist {
     public void mostrarPlaylist() {
         NodoDoble temp = cabeza;
 
+        if (temp == null) {
+            System.out.println("La playlist está vacía");
+            return;
+        }
+
         while (temp != null) {
             temp.dato.reproducir();
             temp = temp.siguiente;
         }
+    }
+
+    public void mostrarActual() {
+        if (actual != null) {
+            actual.dato.reproducir();
+        } else {
+            System.out.println("No hay canción actual");
+        }
+    }
+
+    public void siguiente() {
+        if (actual != null && actual.siguiente != null) {
+            actual = actual.siguiente;
+            actual.dato.reproducir();
+        } else {
+            System.out.println("No hay siguiente canción");
+        }
+    }
+
+    public void anterior() {
+        if (actual != null && actual.anterior != null) {
+            actual = actual.anterior;
+            actual.dato.reproducir();
+        } else {
+            System.out.println("No hay canción anterior");
+        }
+    }
+
+    public void eliminarActual() {
+        if (actual == null) {
+            System.out.println("No hay canción para eliminar");
+            return;
+        }
+
+        if (cabeza == cola) {
+            cabeza = null;
+            cola = null;
+            actual = null;
+        } else if (actual == cabeza) {
+            cabeza = cabeza.siguiente;
+            cabeza.anterior = null;
+            actual = cabeza;
+        } else if (actual == cola) {
+            cola = cola.anterior;
+            cola.siguiente = null;
+            actual = cola;
+        } else {
+            NodoDoble anteriorNodo = actual.anterior;
+            NodoDoble siguienteNodo = actual.siguiente;
+
+            anteriorNodo.siguiente = siguienteNodo;
+            siguienteNodo.anterior = anteriorNodo;
+
+            actual = siguienteNodo;
+        }
+
+        tamanio--;
+        System.out.println("Canción eliminada correctamente");
     }
 }
